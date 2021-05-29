@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
-CURRENT="$HOME/lab/current"
-PROJECT_PATH=$(realpath "$1")
+: ${SRVRUSR:=http}
+ARG=${1:-.}
+
+if id "$SRVRUSR" >/dev/null 2>&1;
+then CURRENT=$(eval echo "~$SRVRUSR")
+else CURRENT=/srvr/http
+fi
+
+PROJECT_PATH=$(realpath "$ARG")
 HTTP_LOG="http-log"
 
-rm -f "$CURRENT"
-ln -s "$PROJECT_PATH" "$CURRENT"
+rm --recursive --force "$CURRENT"
+ln --symbolic "$PROJECT_PATH" "$CURRENT"
 
-mkdir -p "$CURRENT/$HTTP_LOG"
+sudo install -d -m 0775 -g "$SRVRUSR" "$CURRENT/$HTTP_LOG"
 
 for CMD in st{op,art,"atus --no-pager"}
 do
