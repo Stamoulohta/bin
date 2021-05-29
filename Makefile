@@ -3,7 +3,7 @@
 SRC:=$(patsubst %/$(lastword $(MAKEFILE_LIST)),%/,$(abspath $(lastword $(MAKEFILE_LIST))))
 SH:=$(wildcard *.sh)
 EXE:=$(SH:.sh=)
-MBIN=/mbin/
+MBIN=/usr/local/bin/
 
 .PHONY: install uninstall
 install: $(EXE)
