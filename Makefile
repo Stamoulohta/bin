@@ -1,15 +1,13 @@
 # vim: noexpandtab
 
-SRC:=$(patsubst %/$(lastword $(MAKEFILE_LIST)),%/,$(abspath $(lastword $(MAKEFILE_LIST))))
-SH:=$(wildcard *.sh)
-EXE:=$(SH:.sh=)
-MBIN=/usr/local/bin/
+EXT=sh
+BINDIR=/usr/local/bin/
 
 .PHONY: install uninstall
-install: $(EXE)
+install: $(addprefix $(DESTDIR)$(BINDIR),$(basename $(wildcard *.$(EXT))))
 
-$(EXE): $(SH)
-	ln -sfn $(SRC)$< $(DESTDIR)$(MBIN)$@
+$(BINDIR)%: %.$(EXT)
+	ln --symbolic --force --no-dereference $(abspath $?) $@
 
 uninstall:
-	-rm $(addprefix $(DESTDIR)$(MBIN), $(EXE))
+	-rm $(addprefix $(DESTDIR)$(BINDIR),$(basename $(wildcard *.$(EXT))))
