@@ -11,7 +11,7 @@ fi
 PROJECT_PATH=$(realpath "$ARG")
 HTTP_LOG="http-log"
 
-rm --recursive --force "$CURRENT"
+rm --force "$CURRENT"
 ln --symbolic "$PROJECT_PATH" "$CURRENT"
 
 sudo install -d -m 0775 -g "$SRVRUSR" "$CURRENT/$HTTP_LOG"
